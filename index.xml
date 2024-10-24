@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+      <title>KaiYi 的筆記本</title>
+      <link>https://notes.kaiyeee.tw</link>
+      <description>Last 10 notes on KaiYi 的筆記本</description>
+      <generator>Quartz -- quartz.jzhao.xyz</generator>
+      <item>
+    <title>🔖 Learn with GPT</title>
+    <link>https://notes.kaiyeee.tw/tags/learn_with_gpt</link>
+    <guid>https://notes.kaiyeee.tw/tags/learn_with_gpt</guid>
+    <description>這裡的文章是我使用 ChatGPT 學習的過程，內文主要是由 ChatGPT 生成，而我稍做修改、排版。.</description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>Linux</title>
+    <link>https://notes.kaiyeee.tw/Operations/Linux/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Linux/</guid>
+    <description></description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>VLAN</title>
+    <link>https://notes.kaiyeee.tw/Operations/Network/VLAN</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Network/VLAN</guid>
+    <description>VLAN 設定 VLAN 不代表對 Ports 的實體隔離 不支援 Tagged VLAN 的交換機，這類封包會因為看不懂而自動丟棄 Tagged / Untagged Port 封包的進出的視角為「交換機」： 收到封包 → 入口規則 → 轉發 → 出口規則 → 發送封包 Tag 封包帶 Tag，也就是帶 VLAN ID Untag 封包沒有帶 Tag，也就是不帶 ...</description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>Networking</title>
+    <link>https://notes.kaiyeee.tw/Operations/Network/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Network/</guid>
+    <description></description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>Proxmox</title>
+    <link>https://notes.kaiyeee.tw/Operations/Proxmox/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Proxmox/</guid>
+    <description>一些有用的 Proxmox 網站們 Proxmox VE Helper-Scripts .</description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>Utilities</title>
+    <link>https://notes.kaiyeee.tw/Operations/Utilities/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Utilities/</guid>
+    <description></description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>🛠️ 維運 (Operations)</title>
+    <link>https://notes.kaiyeee.tw/Operations/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/</guid>
+    <description></description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>👨‍💻 開發 (Programming)</title>
+    <link>https://notes.kaiyeee.tw/Programming/</link>
+    <guid>https://notes.kaiyeee.tw/Programming/</guid>
+    <description></description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>Ansible</title>
+    <link>https://notes.kaiyeee.tw/Operations/Ansible/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Ansible/</guid>
+    <description></description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item><item>
+    <title>Container</title>
+    <link>https://notes.kaiyeee.tw/Operations/Container/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Container/</guid>
+    <description></description>
+    <pubDate>Thu, 24 Oct 2024 15:21:55 GMT</pubDate>
+  </item>
+    </channel>
+  </rss>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en"><head><title>使用 NUT 控管 UPS 設備</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM Plex Mono&amp;family=Noto Sans TC:wght@400;700&amp;family=Noto Sans TC:ital,wght@0,400;0,600;1,400;1,600&amp;display=swap"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta property="og:title" content="使用 NUT 控管 UPS 設備"/><meta property="og:description" content="..."/><meta property="og:image" content="https://notes.kaiyeee.tw/static/og-image.png"/><meta property="og:width" content="1200"/><meta property="og:height" content="675"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="..."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script></head><body data-slug="Operations/Utilities/ups"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">KaiYi 的筆記本</a></h2><div class="spacer mobile-only"></div><div class="search"><button class="search-button" id="search-button"><p>Search</p><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg></button><div id="search-container"><div id="search-space"><input autocomplete="off" id="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div id="search-layout" data-preview="true"></div></div></div></div><button class="darkmode" id="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Dark mode"><title>Dark mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Light mode"><title>Light mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button><div class="explorer desktop-only"><button type="button" id="explorer" data-behavior="link" data-collapsed="open" data-savestate="true" data-tree="[{&quot;path&quot;:&quot;Programming&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Ansible&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Container&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Container/kubernetes&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Container/talos&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Linux&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Network&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Network/mikrotik&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Proxmox&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Utilities&quot;,&quot;collapsed&quot;:false}]" aria-controls="explorer-content" aria-expanded="true"><h2>所有筆記</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-content"><ul class="overflow" id="explorer-ul"><li><div class="folder-outer open"><ul style="padding-left:0;" class="content" data-folderul><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Programming"><a href="../../Programming/" data-for="Programming" class="folder-title">👨‍💻 開發 (Programming)</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Programming"></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations"><a href="../../Operations/" data-for="Operations" class="folder-title">🛠️ 維運 (Operations)</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Ansible"><a href="../../Operations/Ansible/" data-for="Ansible" class="folder-title">Ansible</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Ansible"><li><a href="../../Operations/Ansible/ansible-handler" data-for="Operations/Ansible/ansible-handler">📃 Ansible 中的 Handler</a></li><li><a href="../../Operations/Ansible/ansible-terraform-compare" data-for="Operations/Ansible/ansible-terraform-compare">📃 Ansible 和 Terraform 的差異</a></li><li><a href="../../Operations/Ansible/ansible-learning-01" data-for="Operations/Ansible/ansible-learning-01">📃 用 ChatGPT 學習 Ansible (1)</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Container"><a href="../../Operations/Container/" data-for="Container" class="folder-title">Container</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Container"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Container/kubernetes"><a href="../../Operations/Container/kubernetes/" data-for="kubernetes" class="folder-title">Kubernetes (k8s)</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Container/kubernetes"><li><a href="../../Operations/Container/kubernetes/k8s-admission-controller" data-for="Operations/Container/kubernetes/k8s-admission-controller">📃 Kubernetes Admission Controller</a></li><li><a href="../../Operations/Container/kubernetes/k8s-hpa" data-for="Operations/Container/kubernetes/k8s-hpa">📃 Kubernetes Horizontal Pod Autoscaler (HPA)</a></li><li><a href="../../Operations/Container/kubernetes/k8s-limit-range" data-for="Operations/Container/kubernetes/k8s-limit-range">📃 Kubernetes Limit Range</a></li><li><a href="../../Operations/Container/kubernetes/k8s-multi-tenancy" data-for="Operations/Container/kubernetes/k8s-multi-tenancy">📃 Kubernetes Multi Tenancy</a></li><li><a href="../../Operations/Container/kubernetes/k8s-object" data-for="Operations/Container/kubernetes/k8s-object">📃 Kubernetes Objects (元件)</a></li><li><a href="../../Operations/Container/kubernetes/k8s-resource-quota" data-for="Operations/Container/kubernetes/k8s-resource-quota">📃 Kubernetes Resource Quota</a></li><li><a href="../../Operations/Container/kubernetes/k8s-service" data-for="Operations/Container/kubernetes/k8s-service">📃 Kubernetes Service</a></li><li><a href="../../Operations/Container/kubernetes/k8s-attack" data-for="Operations/Container/kubernetes/k8s-attack">📃 Kubernetes 的攻擊</a></li><li><a href="../../Operations/Container/kubernetes/k8s-networking" data-for="Operations/Container/kubernetes/k8s-networking">📃 Kubernetes 的網路世界 - 文章蒐集區</a></li><li><a href="../../Operations/Container/kubernetes/k8s-resource-management" data-for="Operations/Container/kubernetes/k8s-resource-management">📃 Kubernetes 的資源管理</a></li><li><a href="../../Operations/Container/kubernetes/k8s" data-for="Operations/Container/kubernetes/k8s">📃 Kubernetes 資源集散地</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Container/talos"><a href="../../Operations/Container/talos/" data-for="talos" class="folder-title">Talos</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Container/talos"><li><a href="../../Operations/Container/talos/talos-vip" data-for="Operations/Container/talos/talos-vip">📃 Talos - Virtual (shared) IP</a></li><li><a href="../../Operations/Container/talos/talos-machineconfig-patch" data-for="Operations/Container/talos/talos-machineconfig-patch">📃 Talos 事後修改機器設定 - Machine Configuration Patch</a></li><li><a href="../../Operations/Container/talos/talos-config-patch" data-for="Operations/Container/talos/talos-config-patch">📃 Talos 修改機器設定 - Configuration Patches</a></li><li><a href="../../Operations/Container/talos/talos-upgrade" data-for="Operations/Container/talos/talos-upgrade">📃 Talos 升級</a></li><li><a href="../../Operations/Container/talos/talos-extension" data-for="Operations/Container/talos/talos-extension">📃 Talos 安裝 Extension</a></li><li><a href="../../Operations/Container/talos/talos-setup" data-for="Operations/Container/talos/talos-setup">📃 Talos 安裝紀錄 - 目錄</a></li><li><a href="../../Operations/Container/talos/talos-setup-01" data-for="Operations/Container/talos/talos-setup-01">📃 Talos 安裝紀錄 (1) - 簡介與環境</a></li><li><a href="../../Operations/Container/talos/talos-setup-02" data-for="Operations/Container/talos/talos-setup-02">📃 Talos 安裝紀錄 (2) - 撰寫 Machine Config</a></li><li><a href="../../Operations/Container/talos/talos-setup-03" data-for="Operations/Container/talos/talos-setup-03">📃 Talos 安裝紀錄 (3) - 安裝系統</a></li><li><a href="../../Operations/Container/talos/talos-commands" data-for="Operations/Container/talos/talos-commands">📃 Talos 常用的指令</a></li><li><a href="../../Operations/Container/talos/talos-interface-name" data-for="Operations/Container/talos/talos-interface-name">📃 Talos 網卡的命名</a></li><li><a href="../../Operations/Container/talos/talos-reset" data-for="Operations/Container/talos/talos-reset">📃 Talos 重設節點或叢集</a></li></ul></div></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Linux"><a href="../../Operations/Linux/" data-for="Linux" class="folder-title">Linux</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Linux"><li><a href="../../Operations/Linux/eBPF" data-for="Operations/Linux/eBPF">📃 eBPF</a></li><li><a href="../../Operations/Linux/virsh-autostart-failed" data-for="Operations/Linux/virsh-autostart-failed">📃 使用 virtsh autostart 但 VM 不會自動啟動</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Network"><a href="../../Operations/Network/" data-for="Network" class="folder-title">Networking</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Network"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Network/mikrotik"><a href="../../Operations/Network/mikrotik/" data-for="mikrotik" class="folder-title">mikrotik</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Network/mikrotik"><li><a href="../../Operations/Network/mikrotik/routeros-traffic-shaping" data-for="Operations/Network/mikrotik/routeros-traffic-shaping">📃 Mikrotik RouterOS 流量塑型 (Traffic Shaping)</a></li><li><a href="../../Operations/Network/mikrotik/routeros-fasttrack" data-for="Operations/Network/mikrotik/routeros-fasttrack">📃 RouterOS Fasttrack</a></li><li><a href="../../Operations/Network/mikrotik/routeros-qos" data-for="Operations/Network/mikrotik/routeros-qos">📃 RouterOS QoS 與 Queue</a></li><li><a href="../../Operations/Network/mikrotik/routeros-firewall" data-for="Operations/Network/mikrotik/routeros-firewall">📃 RouterOS 防火牆 (Firewall)</a></li></ul></div></li><li><a href="../../Operations/Network/ipsec" data-for="Operations/Network/ipsec">📃 IPsec</a></li><li><a href="../../Operations/Network/VLAN" data-for="Operations/Network/VLAN">📃 VLAN</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Proxmox"><a href="../../Operations/Proxmox/" data-for="Proxmox" class="folder-title">Proxmox</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Proxmox"><li><a href="../../Operations/Proxmox/proxmox-nut" data-for="Operations/Proxmox/proxmox-nut">📃 Proxmox 使用 NUT 自動關機</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Utilities"><a href="../../Operations/Utilities/" data-for="Utilities" class="folder-title">Utilities</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Utilities"><li><a href="../../Operations/Utilities/ups" data-for="Operations/Utilities/ups">📃 使用 NUT 控管 UPS 設備</a></li><li><a href="../../Operations/Utilities/soap-age-encryption" data-for="Operations/Utilities/soap-age-encryption">📃 使用 SOPS 和 AGE 加密基礎設施設定檔</a></li></ul></div></li></ul></div></li><li><div class="folder-outer open"><ul style="padding-left:0;" class="content" data-folderul></ul></div></li></ul></div></li><li id="explorer-end"></li></ul></div></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> / </p></div><div class="breadcrumb-element"><a href="../../Operations/">🛠️ 維運 (Operations)</a><p> / </p></div><div class="breadcrumb-element"><a href="../../Operations/Utilities/">Utilities</a><p> / </p></div><div class="breadcrumb-element"><a href>使用 NUT 控管 UPS 設備</a></div></nav><h1 class="article-title">使用 NUT 控管 UPS 設備</h1><p use-space="true" show-comma="false" class="content-meta"><span>🗓️ Jun 19, 2024</span><span>🔄 Oct 24, 2024</span><span>🕓 10 min read</span></p><div class="spacer"></div><div class="toc mobile-only"><button type="button" id="toc" class aria-controls="toc-content" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="toc-content" class><ul class="overflow"><li class="depth-0"><a href="#nut-以及他的好朋友們" data-for="nut-以及他的好朋友們">NUT 以及他的好朋友們</a></li><li class="depth-1"><a href="#nut-元件" data-for="nut-元件">NUT 元件</a></li><li class="depth-1"><a href="#nut-指令" data-for="nut-指令">NUT 指令</a></li><li class="depth-1"><a href="#nut-設定檔" data-for="nut-設定檔">NUT 設定檔</a></li><li class="depth-0"><a href="#設定-nut-server" data-for="設定-nut-server">設定 NUT Server</a></li><li class="depth-1"><a href="#安裝-nut-ups-server" data-for="安裝-nut-ups-server">安裝 NUT UPS Server</a></li><li class="depth-1"><a href="#抓取連線的-ups" data-for="抓取連線的-ups">抓取連線的 UPS</a></li><li class="depth-1"><a href="#設定-ups-連線" data-for="設定-ups-連線">設定 UPS 連線</a></li><li class="depth-1"><a href="#設定-nut-模式" data-for="設定-nut-模式">設定 NUT 模式</a></li><li class="depth-1"><a href="#設定-nut-網路" data-for="設定-nut-網路">設定 NUT 網路</a></li><li class="depth-1"><a href="#設定-nut-帳號" data-for="設定-nut-帳號">設定 NUT 帳號</a></li><li class="depth-1"><a href="#設定-nut-cgi-server" data-for="設定-nut-cgi-server">設定 NUT CGI Server</a></li><li class="depth-0"><a href="#使用-nut" data-for="使用-nut">使用 NUT</a></li><li class="depth-1"><a href="#查看-ups-狀態" data-for="查看-ups-狀態">查看 UPS 狀態</a></li><li class="depth-2"><a href="#ups-資訊" data-for="ups-資訊">UPS 資訊</a></li><li class="depth-1"><a href="#控制-ups" data-for="控制-ups">控制 UPS</a></li><li class="depth-1"><a href="#ups-日誌" data-for="ups-日誌">UPS 日誌</a></li><li class="depth-0"><a href="#設定-nut-client" data-for="設定-nut-client">設定 NUT Client</a></li><li class="depth-1"><a href="#安裝-nut-client" data-for="安裝-nut-client">安裝 NUT Client</a></li><li class="depth-1"><a href="#設定-nut-模式-1" data-for="設定-nut-模式-1">設定 NUT 模式</a></li><li class="depth-1"><a href="#確認連線正常" data-for="確認連線正常">確認連線正常</a></li><li class="depth-1"><a href="#設定-nut-監控的機器" data-for="設定-nut-監控的機器">設定 NUT 監控的機器</a></li></ul></div></div></div></div><article class="popover-hint"><blockquote>
+<p>內文大多來自 <a href="https://klab.tw/2023/04/monitor-and-control-ups-with-network-ups-tools-on-linux/" rel="nofollow noopener noreferrer" target="_blank" class="external">使用樹莓派監測控管UPS設備／Network UPS Tools／Linux [2023年最新] - Kyle’s Blog (KodeLab)<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>，該文章寫的非常好，請大家至原文閱讀，以下為整理的筆記</p>
+</blockquote>
+<h1 id="nut-以及他的好朋友們">NUT 以及他的好朋友們<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#nut-以及他的好朋友們" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="nut-元件">NUT 元件<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#nut-元件" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>元件</th><th>說明</th></tr></thead><tbody><tr><td>nut-driver</td><td>與 UPS 溝通的驅動程式</td></tr><tr><td>nut-server</td><td>能透過 nut-driver 獲得資訊後傳遞給 client</td></tr><tr><td>nut-client (nut-monitor)</td><td>能連上 nut-server 獲取 UPS 資訊，然後控制本機關機等操作</td></tr><tr><td>nut-cgi</td><td>簡易的網頁介面，顯示 UPS 狀態</td></tr></tbody></table></div>
+<h2 id="nut-指令">NUT 指令<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#nut-指令" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>指令</th><th>說明</th></tr></thead><tbody><tr><td>upsd</td><td>NUT Server 的 deamon</td></tr><tr><td>upsdrvctl</td><td>NUT Server 上的 UPS 驅動程式</td></tr><tr><td>upsc</td><td>簡易版的 UPS Client，可以快速連上本地或網路上的 NUT Server 查看 UPS 狀態</td></tr><tr><td>upsmon</td><td>監看 UPS 與關機控制的程式</td></tr><tr><td>upscmd</td><td>對 UPS 下達指令，例如開始電池測試、關閉蜂鳴器…等</td></tr><tr><td>upslog</td><td>查看 UPS 狀態紀錄</td></tr></tbody></table></div>
+<h2 id="nut-設定檔">NUT 設定檔<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#nut-設定檔" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>設定檔</th><th>說明</th></tr></thead><tbody><tr><td>nut.conf</td><td>NUT 運作模式等基本設定</td></tr><tr><td>ups.conf</td><td>NUT 的 UPS Driver 要連線的 UPS 的設定</td></tr><tr><td>upsd.conf</td><td>NUT 的 UPS Daemon 的設定</td></tr><tr><td>upsd.users</td><td>nut-server 使用者的帳密</td></tr><tr><td>upsmon.conf</td><td>nut-monitor 的設定</td></tr><tr><td>upssched.conf</td><td>NUT 排程</td></tr><tr><td>hosts.conf</td><td>NUT CGI Server 要監控的端點</td></tr></tbody></table></div>
+<h1 id="設定-nut-server">設定 NUT Server<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-nut-server" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p>筆者安裝的環境是 Raspberry Pi 3B+，UPS 型號是 <code>CP1500PFCLCDa TW</code>，搭配串接另一台 Synology NAS UPS Server</p>
+</blockquote>
+<h2 id="安裝-nut-ups-server">安裝 NUT UPS Server<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#安裝-nut-ups-server" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="solarized-light solarized-dark"><code data-language="bash" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># 安裝 nut 後會一併安裝 nut-server 跟 nut-client 等程式。</span></span>
+<span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> sudo</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> apt</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> install</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -y</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> nut</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># 或是 Fedora 系列的</span></span>
+<span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> sudo</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> dnf</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> install</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -y</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> nut</span></span></code></pre></figure>
+<h2 id="抓取連線的-ups">抓取連線的 UPS<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#抓取連線的-ups" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>將 UPS 的 USB 連接線插入電腦中</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="solarized-light solarized-dark"><code data-language="bash" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> lsusb</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Bus 001 Device 005: ID 0764:0601 Cyber Power System, Inc. PR1500LCDRT2U UPS</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Bus 001 Device 004: ID 0424:7800 Microchip Technology, Inc. (formerly SMSC)</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Bus 001 Device 003: ID 0424:2514 Microchip Technology, Inc. (formerly SMSC) USB 2.0 Hub</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Bus 001 Device 002: ID 0424:2514 Microchip Technology, Inc. (formerly SMSC) USB 2.0 Hub</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</span></span>
+<span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> sudo</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> nut-scanner</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -U</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Scanning USB bus.</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># [nutdev1]</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># 	driver = &quot;usbhid-ups&quot;</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;">#	port = &quot;auto&quot;</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;">#	vendorid = &quot;0764&quot;</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;">#	productid = &quot;0601&quot;</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;">#	product = &quot;CP1500PFCLCDa TW&quot;</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;">#	serial = &quot;CXXXX2000111&quot;</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;">#	vendor = &quot;CPS&quot;</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;">#	bus = &quot;001&quot;</span></span></code></pre></figure>
+<h2 id="設定-ups-連線">設定 UPS 連線<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-ups-連線" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><code>sudo nano /etc/nut/ups.conf</code>，將設定加入到檔案末</p>
+<figure data-rehype-pretty-code-figure><figcaption data-rehype-pretty-code-title data-language="ini" data-theme="solarized-light solarized-dark">/etc/nut/ups.conf</figcaption><pre tabindex="0" data-language="ini" data-theme="solarized-light solarized-dark"><code data-language="ini" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#657B83;--shiki-dark:#839496;">[server_ups]</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">  driver</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = usbhid-ups</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">  port</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = auto</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">  vendorid</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = 0764</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">  productid</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = 0601</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">  pollinterval</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = 5</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">  desc</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = </span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;">&quot;Server Cluster UPS&quot;</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">  serial</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = CXXXX2000111</span></span></code></pre></figure>
+<ul>
+<li>行 <code>1</code>：UPS 的名字，可以自己取</li>
+<li>行 <code>2-5</code>、<code>8</code>：依照前步驟 <code>sudo nut-scanner -U</code> 顯示的內容填入</li>
+<li>行 <code>6</code>：可不填入，範例的意思是每五秒拉一次訊息</li>
+<li>行 <code>7</code>：UPS 的描述，內容可自行填入</li>
+</ul>
+<p>完成後，執行 <code>sudo upsdrvctl restart</code> 重啟驅動</p>
+<h2 id="設定-nut-模式">設定 NUT 模式<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-nut-模式" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><code>sudo nano /etc/nut/nut.conf</code>，將 <code>none</code> 改為 <code>netserver</code></p>
+<figure data-rehype-pretty-code-figure><figcaption data-rehype-pretty-code-title data-language="ini" data-theme="solarized-light solarized-dark">/etc/nut/nut.conf</figcaption><pre tabindex="0" data-language="ini" data-theme="solarized-light solarized-dark"><code data-language="ini" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">MODE</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;">=netserver</span></span></code></pre></figure>
+<p>MODE 還有：單機模式 <code>standalone</code>、僅連線 ups server 的 <code>netclient</code></p>
+<p>完成後執行 <code>sudo systemctl restart nut-server</code> 重啟服務</p>
+<h2 id="設定-nut-網路">設定 NUT 網路<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-nut-網路" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><code>sudo nano /etc/nut/upsd.conf</code>，將設定加入到檔案末</p>
+<figure data-rehype-pretty-code-figure><figcaption data-rehype-pretty-code-title data-language="ini" data-theme="solarized-light solarized-dark">/etc/nut/upsd.conf</figcaption><pre tabindex="0" data-language="ini" data-theme="solarized-light solarized-dark"><code data-language="ini" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#657B83;--shiki-dark:#839496;">LISTEN 0.0.0.0 3493</span></span></code></pre></figure>
+<p><code>3493</code> 是預設 port，<code>0.0.0.0</code> 代表允許任何 IP 連入，若要增加安全性可以稍作修改</p>
+<h2 id="設定-nut-帳號">設定 NUT 帳號<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-nut-帳號" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><code>sudo nano /etc/nut/upsd.users</code>，將設定加入到檔案末</p>
+<figure data-rehype-pretty-code-figure><figcaption data-rehype-pretty-code-title data-language="ini" data-theme="solarized-light solarized-dark">/etc/nut/upsd.users</figcaption><pre tabindex="0" data-language="ini" data-theme="solarized-light solarized-dark"><code data-language="ini" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#657B83;--shiki-dark:#839496;">[admin]</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">	password</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = your_admin_password</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">	actions</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = SET</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">	instcmds</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = ALL</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#657B83;--shiki-dark:#839496;">[upsmon]</span></span>
+<span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">	password</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;"> = your_password</span></span>
+<span data-line><span style="--shiki-light:#657B83;--shiki-dark:#839496;">	upsmon primary</span></span></code></pre></figure>
+<ul>
+<li>行 <code>1</code>：admin 可以改成自己喜歡的帳號名，這個是使用 <code>upscmd</code> 控制 UPS 的時候會使用到的帳號</li>
+<li>行 <code>6</code>：upsmon 是給 nut-monitor 使用的帳號</li>
+<li>行 <code>8</code>：電源不足時，<code>secondary</code> 會先關機，<code>primary</code> 後作動，因為他是最主要的系統。舊版本可能稱為 <code>master</code>、<code>slave</code></li>
+</ul>
+<p>完成後執行 <code>sudo systemctl restart nut-server</code> 重啟服務</p>
+<h2 id="設定-nut-cgi-server">設定 NUT CGI Server<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-nut-cgi-server" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>因為筆者使用 Raspberry Pi 跑 NUT，不想要浪費寶貴的計算資源，決定使用 <code>nut-cgi</code> 和 cgi 用的網頁伺服器 <code>lighttpd</code></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="solarized-light solarized-dark"><code data-language="bash" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> sudo</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> apt</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> install</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> nut-cgi</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> lighttpd</span></span></code></pre></figure>
+<p><code>sudo nano /etc/nut/hosts.conf</code>，將設定加入到檔案末</p>
+<figure data-rehype-pretty-code-figure><figcaption data-rehype-pretty-code-title data-language="ini" data-theme="solarized-light solarized-dark">/etc/nut/hosts.conf</figcaption><pre tabindex="0" data-language="ini" data-theme="solarized-light solarized-dark"><code data-language="ini" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#657B83;--shiki-dark:#839496;">MONITOR server_ups@localhost </span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;">&quot;Server Cluster UPS&quot;</span></span>
+<span data-line><span style="--shiki-light:#657B83;--shiki-dark:#839496;">MONITOR ups@192.168.1.1 </span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;">&quot;Network Device UPS&quot;</span></span></code></pre></figure>
+<ul>
+<li>行 <code>2</code>：筆者有另一台 UPS 接在 Synology NAS 上，故填入兩行</li>
+</ul>
+<p>設定完成後可以讓 cgi server 跑起來</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="solarized-light solarized-dark"><code data-language="bash" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> sudo</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> lighttpd-enable-mod</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> cgi</span></span>
+<span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> sudo</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> service</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> lighttpd</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> force-reload</span></span></code></pre></figure>
+<p>這時候進入 http://your_ip/cgi-bin/nut/upsstats.cgi 就能看到簡潔有利的畫面了
+<img src="../../assets/ups/nutcgi-home.png" alt="NUT CGI Home Page"/>
+<img src="../../assets/ups/nutcgi-info.png" alt="NUT CGI Info Page"/></p>
+<p>不喜歡那麼簡陋畫面的話，還有 <a href="https://github.com/Brandawg93/PeaNUT" rel="nofollow noopener noreferrer" target="_blank" class="external">Brandawg93/PeaNUT<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>、<a href="https://github.com/rshipp/webNUT" rel="nofollow noopener noreferrer" target="_blank" class="external">rshipp/webNUT<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>、<a href="https://github.com/BeardedTek-com/nutui" rel="nofollow noopener noreferrer" target="_blank" class="external">BeardedTek-com/nutui<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> 可以選擇</p>
+<h1 id="使用-nut">使用 NUT<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#使用-nut" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="查看-ups-狀態">查看 UPS 狀態<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#查看-ups-狀態" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>使用 <code>upsc</code> 即可查看狀態，<code>upsc ups_name@host</code>。Ex: <code>upsc server_ups@localhost</code></p>
+<h3 id="ups-資訊">UPS 資訊<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ups-資訊" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>名稱</th><th>說明</th><th>數值範例</th></tr></thead><tbody><tr><td>battery.charge</td><td>目前電池電量（%）</td><td>100</td></tr><tr><td>battery.charge.warning</td><td>電池低電量警告閾值（%）</td><td>20</td></tr><tr><td>battery.charge.low</td><td>電池低電量保護閾值（%）</td><td>10</td></tr><tr><td>battery.runtime</td><td>預估電池剩餘供電時間（秒）</td><td>3525</td></tr><tr><td>battery.type</td><td>電池類型</td><td>PbAcid</td></tr><tr><td>battery.voltage</td><td>電池電壓</td><td>27.6</td></tr><tr><td>battery.voltage.nominal</td><td>標準電壓值</td><td>24</td></tr><tr><td>device.type</td><td>設備類型（NUT 可以檢測 UPS 以外的一些電源設備）</td><td>ups</td></tr><tr><td>driver.name</td><td>驅動名稱</td><td>usbhid-ups</td></tr><tr><td>driver.parameter.port</td><td>與 UPS 的通訊埠</td><td>auto</td></tr><tr><td>driver.version</td><td>驅動版本</td><td>2.7.4</td></tr><tr><td>input.frequency</td><td>輸入的交流電頻率</td><td>60</td></tr><tr><td>input.voltage</td><td>輸入到 UPS 的電壓（V）</td><td>115.0</td></tr><tr><td>input.frequency</td><td>輸入到 UPS 的交流電頻率</td><td></td></tr><tr><td>input.transfer.high</td><td>電壓上限，超過時會啟動穩壓保護</td><td>136</td></tr><tr><td>input.transfer.low</td><td>電壓下限，低於時會啟動穩壓保護</td><td>88</td></tr><tr><td>output.voltage</td><td>目前輸出給用電設備的電壓</td><td>115.0</td></tr><tr><td>ups.mfr</td><td>UPS 製造商</td><td>CPS</td></tr><tr><td>ups.model</td><td>UPS 型號</td><td>CP1500PFCLCD</td></tr><tr><td>ups.vendorid</td><td>UPS 製造商 ID</td><td>0764</td></tr><tr><td>ups.productid</td><td>UPS 型號 ID</td><td>0501</td></tr><tr><td>ups.load</td><td>UPS 負載 (%)</td><td>10</td></tr><tr><td>ups.temperature</td><td>UPS 溫度</td><td></td></tr><tr><td>ups.status</td><td>UPS 狀態，常見有 <code>OL</code>（正常）、OB（使用電池）、<code>OB</code>（低電量）、<code>RB</code>（電池測試）、<code>CHRG</code>（電池充電）</td><td>OL</td></tr><tr><td>ups.beeper.status</td><td>UPS 蜂鳴器是否啟動</td><td>enabled</td></tr><tr><td>ups.test.result</td><td>UPS 自我測試結果：No test initiated、In progress、Aborted、Done and passed…等</td><td>Done and passed</td></tr></tbody></table></div>
+<h2 id="控制-ups">控制 UPS<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#控制-ups" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>使用 <code>upscmd</code> 即可控制 UPS，下 <code>-l</code> 可以看自己能對 UPS 做什麼事，ex: <code>upscmd -u admin -p password -l ups@localhost</code></p>
+<p>帳號是稍早寫在 <code>/etc/nut/upsd.users</code> 中的， 若是連線到 Synology NAS 的 UPS，帳號密碼分別是 <code>monuser</code> 和 <code>secret</code></p>
+<p>關閉 UPS 蜂鳴器的範例：<code>upscmd -u monuser -p secret ups@nas.ip beeper.disable</code></p>
+<h2 id="ups-日誌">UPS 日誌<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ups-日誌" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><code>upslog</code> 可以用來查看 ups 日誌</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="solarized-light solarized-dark"><code data-language="bash" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> sudo</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> upslog</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -s</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> server_ups</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -i</span><span style="--shiki-light:#D33682;--shiki-dark:#D33682;"> 5</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -l</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> -</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Network UPS Tools upslog 2.8.0</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># logging status of server_ups to - (5s intervals)</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Init SSL without certificate database</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># 20240617 215506 100 117.0 13 [OL] NA NA</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># 20240617 215511 100 117.0 13 [OL] NA NA</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># 20240617 215513 100 117.0 13 [OL] NA NA</span></span></code></pre></figure>
+<ul>
+<li><code>-i 5</code>：每五秒一次</li>
+<li><code>-l -</code>：輸出到 STDOUT</li>
+<li>輸出格式：<code>yyyyMMdd HHmmss 電池電量 輸入電壓 負載(%) [供電狀態] UPS溫度 輸入頻率</code></li>
+</ul>
+<h1 id="設定-nut-client">設定 NUT Client<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-nut-client" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p>這裡 client 指的是遠端機器，跟上方 NUT Server 不同台</p>
+</blockquote>
+<h2 id="安裝-nut-client">安裝 NUT Client<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#安裝-nut-client" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="solarized-light solarized-dark"><code data-language="bash" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> sudo</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> apt</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> install</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -y</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> nut-client</span></span></code></pre></figure>
+<h2 id="設定-nut-模式-1">設定 NUT 模式<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-nut-模式-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><code>sudo nano /etc/nut/nut.conf</code>，將 <code>none</code> 改為 <code>netclient</code></p>
+<figure data-rehype-pretty-code-figure><figcaption data-rehype-pretty-code-title data-language="ini" data-theme="solarized-light solarized-dark">/etc/nut/nut.conf</figcaption><pre tabindex="0" data-language="ini" data-theme="solarized-light solarized-dark"><code data-language="ini" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#859900;--shiki-dark:#859900;">MODE</span><span style="--shiki-light:#657B83;--shiki-dark:#839496;">=netclient</span></span></code></pre></figure>
+<h2 id="確認連線正常">確認連線正常<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#確認連線正常" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>先使用 <code>upsc</code> 連線看看，確認中間通訊沒有被防火牆擋住</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="solarized-light solarized-dark"><code data-language="bash" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> upsc</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> server_ups@192.168.1.2</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># Init SSL without certificate database</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># battery.charge: 100</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># battery.charge.low: 10</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># battery.charge.warning: 20</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># battery.mfr.date: CPS</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># battery.runtime: 3525</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># .......(略)</span></span></code></pre></figure>
+<h2 id="設定-nut-監控的機器">設定 NUT 監控的機器<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#設定-nut-監控的機器" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><code>sudo nano /etc/nut/upsmon.conf</code>，將設定加入到檔案末</p>
+<figure data-rehype-pretty-code-figure><figcaption data-rehype-pretty-code-title data-language="ini" data-theme="solarized-light solarized-dark">/etc/nut/upsmon.conf</figcaption><pre tabindex="0" data-language="ini" data-theme="solarized-light solarized-dark"><code data-language="ini" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#657B83;--shiki-dark:#839496;">MONITOR server_ups@192.168.1.2 1 upsmon your_password secondary</span></span></code></pre></figure>
+<ul>
+<li>將 <code>upsmon</code> 以及 <code>your_password</code> 改成您的帳號及密碼，該值是在 <a href="#%E8%A8%AD%E5%AE%9A-nut-%E5%B8%B3%E8%99%9F" class="internal"><code>upsd.users</code></a> 中設定的</li>
+<li>語法解釋：<code>MONITOR &lt;system> &lt;powervalue> &lt;username> &lt;password> (&quot;primary&quot;|&quot;secondary&quot;)</code>
+<ul>
+<li><code>&lt;system></code>：語法是 <code>&lt;upsname>@&lt;hostname>[:&lt;port>]</code></li>
+<li><code>&lt;powervalue></code>：通常為 <code>1</code></li>
+<li><code>primary</code> 代表會最後關機，因為他是最主要的系統，會先讓 <code>secondary</code> 先關機</li>
+</ul>
+</li>
+<li>還有很多設定，<a href="https://networkupstools.org/docs/man/upsmon.conf.html" rel="nofollow noopener noreferrer" target="_blank" class="external"><code>upsmon.conf</code><svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> 中的註解寫的非常清楚
+<ul>
+<li><code>SHUTDOWNCMD</code>：關機要執行的指令</li>
+<li><code>NOTIFYCMD</code>：發生事件要執行的指令</li>
+<li><code>NOTIFYFLAG</code>：發生什麼事件要做什麼事情，語法：<code>NOTIFYFLAG &lt;notify type> &lt;flag>[+&lt;flag>][+&lt;flag>] ...</code>
+<ul>
+<li><code>&lt;notify type></code>
+<ul>
+<li><code>ONLINE</code>：UPS 在線上，即市電恢復時會觸發</li>
+<li><code>ONBATT</code>：UPS 使用電池供電，即市電中斷時會觸發</li>
+<li><code>LOWBATT</code>：UPS 低電量時會觸發</li>
+<li><code>FSD</code>：UPS 正在被關閉 (Forced Shutdown)</li>
+<li><code>COMMOK</code>：與 nut-server 成功建立連接時觸發</li>
+<li><code>COMMBAD</code>：與 nut-server 建立連接失敗（或斷線）時觸發</li>
+<li><code>SHUTDOWN</code>：UPS 發出關機指令觸發</li>
+<li><code>REPLBATT</code>：UPS 需要更換電池時觸發</li>
+<li><code>NOCOMM</code>：無法與 UPS 建立連接 (UPS未就緒) 時觸發</li>
+</ul>
+</li>
+<li><code>&lt;flag></code>
+<ul>
+<li><code>SYSLOG</code>：只在 syslog 中紀錄</li>
+<li><code>WALL</code>：在終端上提示 (<code>/bin/wall</code>)</li>
+<li><code>EXEC</code>：執行 <code>NOTIFYCMD</code> 指定的命令，並傳遞相關事件</li>
+<li><code>IGNORE</code>：忽略該事件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>設定完成後重啟服務 <code>upsmon -c reload</code>，並且可以用 <code>ps</code> 查看服務是否正常執行</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="bash" data-theme="solarized-light solarized-dark"><code data-language="bash" data-theme="solarized-light solarized-dark" style="display:grid;"><span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> upsmon</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -c</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> reload</span></span>
+<span data-line><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;">$</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> ps</span><span style="--shiki-light:#CB4B16;--shiki-dark:#CB4B16;"> -ef</span><span style="--shiki-light:#859900;--shiki-dark:#859900;"> |</span><span style="--shiki-light:#268BD2;--shiki-dark:#268BD2;"> grep</span><span style="--shiki-light:#2AA198;--shiki-dark:#2AA198;"> upsmon</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># root     1143160       1  0 11:22 ?        00:00:00 /lib/nut/upsmon start</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># nut      1143161 1143160  0 11:22 ?        00:00:02 /lib/nut/upsmon start</span></span>
+<span data-line><span style="--shiki-light:#93A1A1;--shiki-light-font-style:italic;--shiki-dark:#586E75;--shiki-dark-font-style:italic;"># root     1250473 1242800  0 22:00 pts/0    00:00:00 grep upsmon</span></span></code></pre></figure></article><hr/><div class="page-footer"><div class="giscus" data-repo="Oschangkai/notes" data-repo-id="R_kgDOL6aRPg" data-category="Announcements" data-category-id="DIC_kwDOL6aRPs4ChNo_" data-mapping="url" data-strict="0" data-reactions-enabled="1" data-input-position="top" data-light-theme="light" data-dark-theme="dark" data-theme-url="https://notes.kaiyeee.tw/static/giscus"></div></div></div><div class="right sidebar"><ul class="tags"><li><a href="../../tags/ups" class="internal tag-link">ups</a></li><li><a href="../../tags/nut" class="internal tag-link">nut</a></li><li><a href="../../tags/opensource" class="internal tag-link">opensource</a></li><li><a href="../../tags/homelab" class="internal tag-link">homelab</a></li><li><a href="../../tags/raspberry-pi" class="internal tag-link">raspberry-pi</a></li></ul><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div id="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.3,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false}"></div><button id="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div id="global-graph-outer"><div id="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.25,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" id="toc" class aria-controls="toc-content" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="toc-content" class><ul class="overflow"><li class="depth-0"><a href="#nut-以及他的好朋友們" data-for="nut-以及他的好朋友們">NUT 以及他的好朋友們</a></li><li class="depth-1"><a href="#nut-元件" data-for="nut-元件">NUT 元件</a></li><li class="depth-1"><a href="#nut-指令" data-for="nut-指令">NUT 指令</a></li><li class="depth-1"><a href="#nut-設定檔" data-for="nut-設定檔">NUT 設定檔</a></li><li class="depth-0"><a href="#設定-nut-server" data-for="設定-nut-server">設定 NUT Server</a></li><li class="depth-1"><a href="#安裝-nut-ups-server" data-for="安裝-nut-ups-server">安裝 NUT UPS Server</a></li><li class="depth-1"><a href="#抓取連線的-ups" data-for="抓取連線的-ups">抓取連線的 UPS</a></li><li class="depth-1"><a href="#設定-ups-連線" data-for="設定-ups-連線">設定 UPS 連線</a></li><li class="depth-1"><a href="#設定-nut-模式" data-for="設定-nut-模式">設定 NUT 模式</a></li><li class="depth-1"><a href="#設定-nut-網路" data-for="設定-nut-網路">設定 NUT 網路</a></li><li class="depth-1"><a href="#設定-nut-帳號" data-for="設定-nut-帳號">設定 NUT 帳號</a></li><li class="depth-1"><a href="#設定-nut-cgi-server" data-for="設定-nut-cgi-server">設定 NUT CGI Server</a></li><li class="depth-0"><a href="#使用-nut" data-for="使用-nut">使用 NUT</a></li><li class="depth-1"><a href="#查看-ups-狀態" data-for="查看-ups-狀態">查看 UPS 狀態</a></li><li class="depth-2"><a href="#ups-資訊" data-for="ups-資訊">UPS 資訊</a></li><li class="depth-1"><a href="#控制-ups" data-for="控制-ups">控制 UPS</a></li><li class="depth-1"><a href="#ups-日誌" data-for="ups-日誌">UPS 日誌</a></li><li class="depth-0"><a href="#設定-nut-client" data-for="設定-nut-client">設定 NUT Client</a></li><li class="depth-1"><a href="#安裝-nut-client" data-for="安裝-nut-client">安裝 NUT Client</a></li><li class="depth-1"><a href="#設定-nut-模式-1" data-for="設定-nut-模式-1">設定 NUT 模式</a></li><li class="depth-1"><a href="#確認連線正常" data-for="確認連線正常">確認連線正常</a></li><li class="depth-1"><a href="#設定-nut-監控的機器" data-for="設定-nut-監控的機器">設定 NUT 監控的機器</a></li></ul></div></div><div class="backlinks"><h3>Backlinks</h3><ul class="overflow"><li>No backlinks found</li></ul></div><div class="explorer mobile-only"><button type="button" id="explorer" data-behavior="link" data-collapsed="open" data-savestate="true" data-tree="[{&quot;path&quot;:&quot;Programming&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Ansible&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Container&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Container/kubernetes&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Container/talos&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Linux&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Network&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Network/mikrotik&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Proxmox&quot;,&quot;collapsed&quot;:false},{&quot;path&quot;:&quot;Operations/Utilities&quot;,&quot;collapsed&quot;:false}]" aria-controls="explorer-content" aria-expanded="true"><h2>所有筆記</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-content"><ul class="overflow" id="explorer-ul"><li><div class="folder-outer open"><ul style="padding-left:0;" class="content" data-folderul><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Programming"><a href="../../Programming/" data-for="Programming" class="folder-title">👨‍💻 開發 (Programming)</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Programming"></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations"><a href="../../Operations/" data-for="Operations" class="folder-title">🛠️ 維運 (Operations)</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Ansible"><a href="../../Operations/Ansible/" data-for="Ansible" class="folder-title">Ansible</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Ansible"><li><a href="../../Operations/Ansible/ansible-handler" data-for="Operations/Ansible/ansible-handler">📃 Ansible 中的 Handler</a></li><li><a href="../../Operations/Ansible/ansible-terraform-compare" data-for="Operations/Ansible/ansible-terraform-compare">📃 Ansible 和 Terraform 的差異</a></li><li><a href="../../Operations/Ansible/ansible-learning-01" data-for="Operations/Ansible/ansible-learning-01">📃 用 ChatGPT 學習 Ansible (1)</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Container"><a href="../../Operations/Container/" data-for="Container" class="folder-title">Container</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Container"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Container/kubernetes"><a href="../../Operations/Container/kubernetes/" data-for="kubernetes" class="folder-title">Kubernetes (k8s)</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Container/kubernetes"><li><a href="../../Operations/Container/kubernetes/k8s-admission-controller" data-for="Operations/Container/kubernetes/k8s-admission-controller">📃 Kubernetes Admission Controller</a></li><li><a href="../../Operations/Container/kubernetes/k8s-hpa" data-for="Operations/Container/kubernetes/k8s-hpa">📃 Kubernetes Horizontal Pod Autoscaler (HPA)</a></li><li><a href="../../Operations/Container/kubernetes/k8s-limit-range" data-for="Operations/Container/kubernetes/k8s-limit-range">📃 Kubernetes Limit Range</a></li><li><a href="../../Operations/Container/kubernetes/k8s-multi-tenancy" data-for="Operations/Container/kubernetes/k8s-multi-tenancy">📃 Kubernetes Multi Tenancy</a></li><li><a href="../../Operations/Container/kubernetes/k8s-object" data-for="Operations/Container/kubernetes/k8s-object">📃 Kubernetes Objects (元件)</a></li><li><a href="../../Operations/Container/kubernetes/k8s-resource-quota" data-for="Operations/Container/kubernetes/k8s-resource-quota">📃 Kubernetes Resource Quota</a></li><li><a href="../../Operations/Container/kubernetes/k8s-service" data-for="Operations/Container/kubernetes/k8s-service">📃 Kubernetes Service</a></li><li><a href="../../Operations/Container/kubernetes/k8s-attack" data-for="Operations/Container/kubernetes/k8s-attack">📃 Kubernetes 的攻擊</a></li><li><a href="../../Operations/Container/kubernetes/k8s-networking" data-for="Operations/Container/kubernetes/k8s-networking">📃 Kubernetes 的網路世界 - 文章蒐集區</a></li><li><a href="../../Operations/Container/kubernetes/k8s-resource-management" data-for="Operations/Container/kubernetes/k8s-resource-management">📃 Kubernetes 的資源管理</a></li><li><a href="../../Operations/Container/kubernetes/k8s" data-for="Operations/Container/kubernetes/k8s">📃 Kubernetes 資源集散地</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Container/talos"><a href="../../Operations/Container/talos/" data-for="talos" class="folder-title">Talos</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Container/talos"><li><a href="../../Operations/Container/talos/talos-vip" data-for="Operations/Container/talos/talos-vip">📃 Talos - Virtual (shared) IP</a></li><li><a href="../../Operations/Container/talos/talos-machineconfig-patch" data-for="Operations/Container/talos/talos-machineconfig-patch">📃 Talos 事後修改機器設定 - Machine Configuration Patch</a></li><li><a href="../../Operations/Container/talos/talos-config-patch" data-for="Operations/Container/talos/talos-config-patch">📃 Talos 修改機器設定 - Configuration Patches</a></li><li><a href="../../Operations/Container/talos/talos-upgrade" data-for="Operations/Container/talos/talos-upgrade">📃 Talos 升級</a></li><li><a href="../../Operations/Container/talos/talos-extension" data-for="Operations/Container/talos/talos-extension">📃 Talos 安裝 Extension</a></li><li><a href="../../Operations/Container/talos/talos-setup" data-for="Operations/Container/talos/talos-setup">📃 Talos 安裝紀錄 - 目錄</a></li><li><a href="../../Operations/Container/talos/talos-setup-01" data-for="Operations/Container/talos/talos-setup-01">📃 Talos 安裝紀錄 (1) - 簡介與環境</a></li><li><a href="../../Operations/Container/talos/talos-setup-02" data-for="Operations/Container/talos/talos-setup-02">📃 Talos 安裝紀錄 (2) - 撰寫 Machine Config</a></li><li><a href="../../Operations/Container/talos/talos-setup-03" data-for="Operations/Container/talos/talos-setup-03">📃 Talos 安裝紀錄 (3) - 安裝系統</a></li><li><a href="../../Operations/Container/talos/talos-commands" data-for="Operations/Container/talos/talos-commands">📃 Talos 常用的指令</a></li><li><a href="../../Operations/Container/talos/talos-interface-name" data-for="Operations/Container/talos/talos-interface-name">📃 Talos 網卡的命名</a></li><li><a href="../../Operations/Container/talos/talos-reset" data-for="Operations/Container/talos/talos-reset">📃 Talos 重設節點或叢集</a></li></ul></div></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Linux"><a href="../../Operations/Linux/" data-for="Linux" class="folder-title">Linux</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Linux"><li><a href="../../Operations/Linux/eBPF" data-for="Operations/Linux/eBPF">📃 eBPF</a></li><li><a href="../../Operations/Linux/virsh-autostart-failed" data-for="Operations/Linux/virsh-autostart-failed">📃 使用 virtsh autostart 但 VM 不會自動啟動</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Network"><a href="../../Operations/Network/" data-for="Network" class="folder-title">Networking</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Network"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Network/mikrotik"><a href="../../Operations/Network/mikrotik/" data-for="mikrotik" class="folder-title">mikrotik</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Network/mikrotik"><li><a href="../../Operations/Network/mikrotik/routeros-traffic-shaping" data-for="Operations/Network/mikrotik/routeros-traffic-shaping">📃 Mikrotik RouterOS 流量塑型 (Traffic Shaping)</a></li><li><a href="../../Operations/Network/mikrotik/routeros-fasttrack" data-for="Operations/Network/mikrotik/routeros-fasttrack">📃 RouterOS Fasttrack</a></li><li><a href="../../Operations/Network/mikrotik/routeros-qos" data-for="Operations/Network/mikrotik/routeros-qos">📃 RouterOS QoS 與 Queue</a></li><li><a href="../../Operations/Network/mikrotik/routeros-firewall" data-for="Operations/Network/mikrotik/routeros-firewall">📃 RouterOS 防火牆 (Firewall)</a></li></ul></div></li><li><a href="../../Operations/Network/ipsec" data-for="Operations/Network/ipsec">📃 IPsec</a></li><li><a href="../../Operations/Network/VLAN" data-for="Operations/Network/VLAN">📃 VLAN</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Proxmox"><a href="../../Operations/Proxmox/" data-for="Proxmox" class="folder-title">Proxmox</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Proxmox"><li><a href="../../Operations/Proxmox/proxmox-nut" data-for="Operations/Proxmox/proxmox-nut">📃 Proxmox 使用 NUT 自動關機</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="Operations/Utilities"><a href="../../Operations/Utilities/" data-for="Utilities" class="folder-title">Utilities</a></div></div><div class="folder-outer open"><ul style="padding-left:1.4rem;" class="content" data-folderul="Operations/Utilities"><li><a href="../../Operations/Utilities/ups" data-for="Operations/Utilities/ups">📃 使用 NUT 控管 UPS 設備</a></li><li><a href="../../Operations/Utilities/soap-age-encryption" data-for="Operations/Utilities/soap-age-encryption">📃 使用 SOPS 和 AGE 加密基礎設施設定檔</a></li></ul></div></li></ul></div></li><li><div class="folder-outer open"><ul style="padding-left:0;" class="content" data-folderul></ul></div></li></ul></div></li><li id="explorer-end"></li></ul></div></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.4.0</a> © 2024</p><ul><li><a href="https://github.com/oschangkai">GitHub</a></li><li><a href="https://twitter.com/oschangkai">Twitter</a></li></ul></footer></div></div></body><script type="application/javascript">function c(){let t=this.parentElement;t.classList.toggle("is-collapsed");let l=t.classList.contains("is-collapsed")?this.scrollHeight:t.scrollHeight;t.style.maxHeight=l+"px";let o=t,e=t.parentElement;for(;e;){if(!e.classList.contains("callout"))return;let n=e.classList.contains("is-collapsed")?e.scrollHeight:e.scrollHeight+o.scrollHeight;e.style.maxHeight=n+"px",o=e,e=e.parentElement}}function i(){let t=document.getElementsByClassName("callout is-collapsible");for(let s of t){let l=s.firstElementChild;if(l){l.addEventListener("click",c),window.addCleanup(()=>l.removeEventListener("click",c));let e=s.classList.contains("is-collapsed")?l.scrollHeight:s.scrollHeight;s.style.maxHeight=e+"px"}}}document.addEventListener("nav",i);window.addEventListener("resize",i);
+</script><script type="module">
+          let mermaidImport = undefined
+          document.addEventListener('nav', async () => {
+            if (document.querySelector("code.mermaid")) {
+              mermaidImport ||= await import('https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs')
+              const mermaid = mermaidImport.default
+              const darkMode = document.documentElement.getAttribute('saved-theme') === 'dark'
+              mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: 'loose',
+                theme: darkMode ? 'dark' : 'default'
+              })
+
+              await mermaid.run({
+                querySelector: '.mermaid'
+              })
+            }
+          });
+          </script><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>
