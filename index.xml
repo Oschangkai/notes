@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+      <title>KaiYi 的筆記本</title>
+      <link>https://notes.kaiyeee.tw</link>
+      <description>最近的 10 條筆記 on KaiYi 的筆記本</description>
+      <generator>Quartz -- quartz.jzhao.xyz</generator>
+      <item>
+    <title>🔖 標籤 (tags)</title>
+    <link>https://notes.kaiyeee.tw/tags/</link>
+    <guid>https://notes.kaiyeee.tw/tags/</guid>
+    <description><![CDATA[  ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>🔖 Learn with GPT</title>
+    <link>https://notes.kaiyeee.tw/tags/learn_with_gpt</link>
+    <guid>https://notes.kaiyeee.tw/tags/learn_with_gpt</guid>
+    <description><![CDATA[ 這裡的文章是我使用 ChatGPT 學習的過程，內文主要是由 ChatGPT 生成，而我稍做修改、排版。 ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>👨‍💻 開發 (Programming)</title>
+    <link>https://notes.kaiyeee.tw/Programming/</link>
+    <guid>https://notes.kaiyeee.tw/Programming/</guid>
+    <description><![CDATA[  ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>🛠️ 維運 (Operations)</title>
+    <link>https://notes.kaiyeee.tw/Operations/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/</guid>
+    <description><![CDATA[  ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>ᝰ 其他 (Others)</title>
+    <link>https://notes.kaiyeee.tw/Others/</link>
+    <guid>https://notes.kaiyeee.tw/Others/</guid>
+    <description><![CDATA[  ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>Utilities</title>
+    <link>https://notes.kaiyeee.tw/Operations/Utilities/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Utilities/</guid>
+    <description><![CDATA[  ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>Proxmox</title>
+    <link>https://notes.kaiyeee.tw/Operations/Proxmox/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Proxmox/</guid>
+    <description><![CDATA[ 一些有用的 Proxmox 網站們 Proxmox VE Helper-Scripts . ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>Talos</title>
+    <link>https://notes.kaiyeee.tw/Operations/Talos/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Talos/</guid>
+    <description><![CDATA[  ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>Networking</title>
+    <link>https://notes.kaiyeee.tw/Operations/Networking/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Networking/</guid>
+    <description><![CDATA[  ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item><item>
+    <title>Kubernetes (k8s)</title>
+    <link>https://notes.kaiyeee.tw/Operations/Kubernetes/</link>
+    <guid>https://notes.kaiyeee.tw/Operations/Kubernetes/</guid>
+    <description><![CDATA[  ]]></description>
+    <pubDate>Sun, 26 Apr 2026 13:19:30 GMT</pubDate>
+  </item>
+    </channel>
+  </rss>
